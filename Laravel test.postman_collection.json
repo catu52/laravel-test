@@ -1,0 +1,286 @@
+{
+	"info": {
+		"_postman_id": "0e3e23a1-bf9f-4013-90ed-09ffff94fae4",
+		"name": "Laravel test",
+		"description": "Laravel test collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1018477"
+	},
+	"item": [
+		{
+			"name": "register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const responseJson = pm.response.json();",
+							"",
+							"if (responseJson && responseJson.access_token) {",
+							"    pm.collectionVariables.set(\"bearer\", responseJson.access_token);",
+							"    console.log(\"Token stored in environment variable 'bearer':\", pm.environment.get(\"authToken\"));",
+							"} else {",
+							"    console.error(\"Access token not found in the response.\");",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Normal user",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "user@email.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "user!@#$",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "user!@#$",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"register"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"",
+							"if (responseJson && responseJson.access_token) {",
+							"    pm.collectionVariables.set(\"bearer\", responseJson.access_token);",
+							"    console.log(\"Token stored in environment variable 'bearer':\", pm.environment.get(\"authToken\"));",
+							"} else {",
+							"    console.error(\"Access token not found in the response.\");",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "user@email.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "user!@#$",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "user!@#$",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/search?query=awesome&limit=5&offset=0",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "awesome"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/search-by-id/{{gif-id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search-by-id",
+						"{{gif-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save favorite",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "gif_id",
+							"value": "{{gif-id}}",
+							"type": "text"
+						},
+						{
+							"key": "alias",
+							"value": "lorem ipsum",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/save-favorite",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"save-favorite"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "bearer",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "gif-id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

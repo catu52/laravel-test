@@ -1,0 +1,43 @@
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: laravel-test
+    working_dir: /var/www/html
+    environment:
+      - APP_NAME=laravel-test
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8000
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=laravel_test
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - CACHE_DRIVER=file
+      - FILESYSTEM_DISK=local
+      - SESSION_DRIVER=file
+    ports:
+      - "8000:80"
+    volumes:
+      - ../:/var/www/html
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.4.1
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=laravel_test
+    volumes:
+      - /var/lib/mysql
+    ports:
+      - "3308:3306"
+    command: ['mysqld', '--mysql-native-password=ON']
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+    ports:
+      - 8090:80

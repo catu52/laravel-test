@@ -1,0 +1,28 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/php
+{
+	"name": "Laravel-test",
+	"dockerComposeFile": "./docker-compose.yml",
+	"service": "app",
+	"runServices": ["mysql", "phpmyadmin"],
+	"workspaceFolder": "/var/www/html",
+	"shutdownAction": "stopCompose",
+	"mounts": [
+		"source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+		"source=${localWorkspaceFolderBasename}-vendor,target=${containerWorkspaceFolder}/vendor,type=volume"
+	],
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	//"forwardPorts": [8080]
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "chmod a+x .devcontainer/setup.sh && ./.devcontainer/setup.sh"
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
